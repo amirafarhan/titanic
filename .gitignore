@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+.streamlit/secrets.toml
+# keras-tuner / checkpoint outputs from Deep_Learning.ipynb
+lab4/
+best_model.keras

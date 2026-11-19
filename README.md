@@ -1,107 +1,114 @@
-🚢 Titanic Survival Prediction – Machine Learning Project
+# 🚢 Titanic Survival Prediction
 
-A complete end-to-end Machine Learning classification project based on the famous Kaggle competition:
-Titanic – Machine Learning from Disaster
+A machine learning project on the Kaggle **Titanic – Machine Learning from Disaster** training data
+(`titanic.csv`, 891 passengers). It covers data exploration with pandas/seaborn, a perceptron built
+from scratch, and a **Keras neural network** (with Keras Tuner experiments) that predicts whether a
+passenger survived. An interactive **Streamlit** app serves the trained network.
 
-This project predicts whether a passenger survived the Titanic disaster using data analysis, feature engineering, and classification models.
+**🔗 Live demo:** https://titanic-survival-89.streamlit.app/
 
-📌 Project Overview
+## 🚀 Features
 
-The Titanic dataset is one of the most popular datasets in machine learning for beginners and professionals.
+- Exploratory analysis and pandas exercises on the Titanic data
+- Perceptron with sigmoid activation and gradient descent implemented in NumPy
+- Neural network classifier (`Deep_Learning.ipynb`):
+  `Dense(128) → Dropout(0.5) → Dense(64) → Dense(64, L1) → Dropout(0.7) → Dense(32, L2) → Dropout(0.3) → Dense(1, sigmoid)`,
+  SGD with momentum, early stopping, plus a Keras Tuner random search
+- **Streamlit demo**:
+  - Predict a passenger: survival probability, the actual survival rate of similar passengers, and a
+    "what if" chart of probability vs. age
+  - Batch prediction from a CSV in Kaggle format (missing values imputed), with download
+  - Model performance: accuracy, precision, recall, F1, ROC AUC, confusion matrix, ROC curve, training history
+  - Data insights: survival rate by sex, class, age group and port
 
-In this project, we:
+## 📊 Model
 
-Analyze passenger data from the Titanic ship
-Perform data cleaning and preprocessing
-Engineer meaningful features
-Train classification models
-Evaluate model performance
-Generate survival predictions
-🧠 Problem Statement
+| | |
+|---|---|
+| Features | `Pclass`, `Sex`, `Age`, `SibSp`, `Parch`, `Fare`, `Embarked` |
+| Preprocessing | Median imputation (Age, Fare), most-frequent (Embarked), ordinal encoding (Sex, Embarked), standard scaling — fitted on the training split |
+| Split | 80/20, `random_state=42` (712 train / 179 test) |
 
-Given passenger information, predict:
+Test-set results of the saved model (`models/`):
 
-🎯 Survived (1) or Not Survived (0)
+| Accuracy | Precision | Recall | F1 | ROC AUC |
+|---|---|---|---|---|
+| 0.816 | 0.815 | 0.716 | 0.763 | 0.880 |
 
-This is a binary classification problem.
+## 🛠️ Tech Stack
 
-📊 Dataset Features
+Python · pandas · NumPy · scikit-learn · TensorFlow / Keras · Keras Tuner · seaborn · Altair · Streamlit · Jupyter
 
-Key features used:
+## 📂 Project Structure
 
-👤 Passenger details (Age, Sex)
-🎟️ Ticket class (Pclass)
-💰 Fare
-🏠 Cabin information
-👨‍👩‍👧 Family onboard (SibSp, Parch)
-📍 Embarked location
-🧠 Key Concepts Covered
-Data preprocessing & cleaning
-Handling missing values
-Feature engineering
-One-hot encoding
-Exploratory Data Analysis (EDA)
-Classification models
-Model evaluation metrics
-🤖 Machine Learning Models Used
-
-Common models used in Titanic projects include:
-
-Logistic Regression
-Decision Tree Classifier
-Random Forest
-K-Nearest Neighbors (KNN)
-Support Vector Machine (SVM)
-🛠️ Technologies Used
-Python 🐍
-Pandas
-NumPy
-Matplotlib
-Seaborn
-Scikit-learn
-Jupyter Notebook
-📂 Project Structure
+```
 titanic/
-│
-├── titanic.ipynb   # Main notebook
-├── data/          # Dataset files (train/test)
-├── plots/         # Visualizations
-└── README.md
-🚀 How to Run
-1. Clone the repository
+├── titanic.csv                    # Kaggle Titanic training data
+├── Deep_Learning.ipynb            # Neural network + Keras Tuner
+├── titanic_data.ipynb             # Missing values / EDA
+├── pandas.ipynb                   # pandas exercises
+├── perceptron_from_scratch.ipynb  # NumPy perceptron
+├── titanic_model.py               # Preprocessing, training, saving, prediction
+├── app.py                         # Streamlit demo
+├── models/
+│   ├── titanic_mlp.keras          # Trained network
+│   ├── preprocessor.joblib        # Fitted imputers, encoder and scaler
+│   └── metadata.json              # Test metrics, ROC curve, training history
+├── requirements.txt
+└── .streamlit/config.toml
+```
+
+## 📦 Installation
+
+```bash
 git clone https://github.com/amirafarhan/titanic.git
-2. Install dependencies
-pip install pandas numpy matplotlib seaborn scikit-learn
-3. Run Jupyter Notebook
-jupyter notebook
-4. Open the file
-titanic.ipynb
-📈 Results
+cd titanic
+python -m venv venv
+# Windows: venv\Scripts\activate    Linux/Mac: source venv/bin/activate
+pip install -r requirements.txt
+```
 
-The model learns patterns such as:
+## ▶️ Run
 
-Women and children had higher survival rates
-First-class passengers had better survival chances
-Fare and passenger class are strong predictors
-🔮 Future Improvements
-Use advanced models (XGBoost, LightGBM)
-Add feature selection optimization
-Deploy as Streamlit web app
-Add interactive survival prediction UI
-Improve hyperparameter tuning
-💡 Key Insight
+Live demo: https://titanic-survival-89.streamlit.app/
 
-This project shows how simple features like gender, age, and class can strongly influence survival prediction, proving the power of data-driven insights.
+Run the Streamlit demo locally (uses the saved model in `models/`):
 
-👨‍💻 Author
+```bash
+streamlit run app.py
+```
 
-Amira Farhan
-Machine Learning & Computer Vision Engineer
+Re-train the model and regenerate `models/`:
 
-⭐ Support
+```bash
+python titanic_model.py
+```
 
-If you like this project:
+Notebooks need a few extra packages:
 
-⭐ Star the repository
-🍴 Fork it
-🚀 Share it
+```bash
+pip install jupyter seaborn keras-tuner tensorboard
+```
+
+Then run `jupyter notebook`.
+
+## 📈 Insights from the data
+
+- Women survived far more often than men (74% vs. 19%)
+- Survival drops with ticket class (1st 63%, 2nd 47%, 3rd 24%)
+- Children under 13 had a higher survival rate than other age groups
+
+## ⚠️ Limitations
+
+- Trained on 712 passengers; the test set has 179, so metrics vary a few points between splits.
+- `Name`, `Ticket` and `Cabin` are not used (Cabin is missing for 77% of passengers).
+
+## 🔮 Future Improvements
+
+- Engineer features such as title (from `Name`), family size and deck (from `Cabin`)
+- Cross-validated comparison with tree-based models
+- Predict on the Kaggle test set and submit
+
+## 👨‍💻 Author
+
+Amira Farhan – Machine Learning & Computer Vision Engineer
