@@ -5,6 +5,8 @@ A machine learning project on the Kaggle **Titanic – Machine Learning from Dis
 from scratch, and a **Keras neural network** (with Keras Tuner experiments) that predicts whether a
 passenger survived. An interactive **Streamlit** app serves the trained network.
 
+**🔗 Live demo:** https://titanic-survival-89.streamlit.app/
+
 ## 🚀 Features
 
 - Exploratory analysis and pandas exercises on the Titanic data
@@ -68,7 +70,9 @@ pip install -r requirements.txt
 
 ## ▶️ Run
 
-Streamlit demo (uses the saved model in `models/`):
+Live demo: https://titanic-survival-89.streamlit.app/
+
+Run the Streamlit demo locally (uses the saved model in `models/`):
 
 ```bash
 streamlit run app.py
